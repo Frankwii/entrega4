@@ -12,3 +12,5 @@ $$L = \prod_{i=1}^b u_i, \text{ donde } u_i \sim \beta \left( \frac{a + i - p}{2
 
 Genérese una muestra de tamaño $N$ de una ley $\Lambda$ de Wilks. Represéntese los resultados mediante
 un histograma.
+
+Link del repositorio de GitHub: https://github.com/Necrohades/entrega4
