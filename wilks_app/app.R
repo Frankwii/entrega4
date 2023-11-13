@@ -9,6 +9,7 @@
 
 library(shiny)
 library(ggplot2)
+library(gridExtra)
 source("wilks.R")
 
 # Define UI for application that draws a histogram
@@ -56,12 +57,23 @@ server <- function(input, output) {
         # generate bins based on input$bins from ui.R
         betas <- lambda.wilks.betas(input$N, input$p, input$a, input$b)
         wishart <- lambda.wilks.wishart(input$N, input$p, input$a, input$b)
-        data <- data.frame(values=c(betas,wishart),type=rep(c("betas","wishart"),each=input$N))
+        data <- data.frame(values=c(betas,wishart),type=rep(c("Betas","Wishart"),each=input$N))
         
-        ggplot(data,aes(x=values)) + 
-          geom_histogram(data=subset(data,type=="betas"),fill = "blue", alpha = 0.8) +
-          geom_histogram(data=subset(data,type=="wishart"),fill = "yellow", alpha = 0.8)+
-          labs(x="Valores", y="Frecuencia absoluta")
+        plot1 = ggplot(data,aes(x=values)) + 
+          geom_histogram(data=subset(data,type=="Wishart"),fill = "yellow", alpha = 0.8)+
+          labs(x="Valores", y="Frecuencia absoluta") + ggtitle("Wishart")
+        
+        plot2=ggplot(data,aes(x=values)) + 
+          geom_histogram(data=subset(data,type=="Betas"),fill = "blue", alpha = 0.8) +
+          labs(x="Valores", y="Frecuencia absoluta") + ggtitle("Betas")
+        
+        # grid.arrange(plot1,plot2)
+        
+        plot <- ggplot(data, aes(x=values, fill=type)) +
+          geom_histogram(alpha=0.8, position="identity") +
+          scale_fill_manual(values=c("blue", "yellow")) +
+          labs(x="Valor", fill="Tipo")
+        plot
     })
 }
 
